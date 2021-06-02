@@ -1,6 +1,6 @@
 // Oliver Kovacs 2020 - snake-js
 
-class Snake {
+module.exports = class Snake {
     constructor(x = 8, y = x, score = 3, direction = 0, startX = 0, startY = 0, food = 5) {
         this.dimensions = { x, y };
         this.score = score;
@@ -11,6 +11,10 @@ class Snake {
         while (food-- > 0) {
             this.generateFood();
         }
+
+        [ "right", "up", "left", "down" ].forEach((direction, i) => {
+            Snake.prototype[direction] = () => this.direction = i;
+        });
     }
 
     next() {
@@ -72,9 +76,3 @@ class Snake {
         }
     }
 }
-
-[ "right", "up", "left", "down" ].forEach((direction, i) => {
-    Snake.prototype[direction] = () => this.direction = i;
-});
-
-module.exports = Snake;
