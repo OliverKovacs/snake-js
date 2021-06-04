@@ -13,7 +13,10 @@ module.exports = class Snake {
         }
 
         [ "right", "up", "left", "down" ].forEach((direction, i) => {
-            Snake.prototype[direction] = () => this.direction = i;
+            Snake.prototype[direction] = () => {
+                if (Math.abs(this.direction - i) === 2) return;
+                this.direction = i;
+            }
         });
     }
 
@@ -21,6 +24,7 @@ module.exports = class Snake {
         let error = "";
         let vector = this.directionToVector();
         let next = this.head.map((e, i) => e + vector[i]);
+
         if (this.collision(...next)) error = "collision";
         else {
             let [ x, y ] = next;
@@ -35,6 +39,7 @@ module.exports = class Snake {
             }
             this.field[x][y] = this.score;
         }
+
         return {
             score: this.score,
             field: this.field,
@@ -68,6 +73,7 @@ module.exports = class Snake {
     generateFood() {
         const { x, y } = this.dimensions;
         let i, j;
+
         while (true) {
             if (!this.field[i = this.random(x)][j = this.random(y)]) {
                 this.field[i][j] = -1;
